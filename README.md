@@ -5,5 +5,3 @@ Objective: family-based vs case control association
 
 `jupyter-lab`
 
-Steps
-1. Simulate pedigrees
