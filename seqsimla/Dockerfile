@@ -11,6 +11,7 @@ RUN cd /tmp && \
     tar -xvf seqsimla2.tar.gz && \
     mv SeqSIMLA2_9_1/bin/SeqSIMLA* /usr/local/bin && \
     chmod a+x /usr/local/bin/SeqSIMLA && \
+    chmod a+x /usr/local/bin convert && \
     cd - && \
     rm -rf /tmp/*
 
