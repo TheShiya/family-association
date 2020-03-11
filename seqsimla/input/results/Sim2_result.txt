@@ -1,0 +1,30 @@
+./SeqSIMLA -popfile ref_file.bed.gz -famfile simped100.txt -proband proband100.txt -folder results -header Sim2 -batch 1 -site 1 --mode-prev -prev 0.1 -or 2.0 
+Simulation started: Fri Mar  6 21:53:32 2020
+
+SeqSIMLA version:		 2.9.1 31August2017
+Reference file:			 ref_file.bed.gz
+Recombination file:		 
+Family file:			 simped100.txt
+Proband file:			 proband100.txt
+Disease sites:			 1 
+Odds ratios:			 2 
+Disease mode:			 prevalence
+
+Reading the reference file...
+1000 haplotypes with 4 bp have been read
+
+Calculating disease or QTL allele frequencies...
+Disease minor allele frequencies for the selected sites:
+1 : 0.095	
+
+
+The estimated disease prevalence is 0.109917
+A total of 0 recombination rates >= 0.1 were read...
+Launched 1 threads successfully.
+Finished generating batch 1
+This batch took 76.5451
+
+Simulation ended: Fri Mar  6 21:54:48 2020
+
+The simulation took 76 seconds
+The IO time is 0% of total time
