@@ -298,315 +298,258 @@ M50
 F50
 O1
 O2
-O3
 For family FAM51
 Cluster1:
 M51
 F51
 O1
 O2
-O3
 For family FAM52
 Cluster1:
 M52
 F52
 O1
 O2
-O3
 For family FAM53
 Cluster1:
 M53
 F53
 O1
 O2
-O3
 For family FAM54
 Cluster1:
 M54
 F54
 O1
 O2
-O3
 For family FAM55
 Cluster1:
 M55
 F55
 O1
 O2
-O3
 For family FAM56
 Cluster1:
 M56
 F56
 O1
 O2
-O3
 For family FAM57
 Cluster1:
 M57
 F57
 O1
 O2
-O3
 For family FAM58
 Cluster1:
 M58
 F58
 O1
 O2
-O3
 For family FAM59
 Cluster1:
 M59
 F59
 O1
 O2
-O3
 For family FAM60
 Cluster1:
 M60
 F60
 O1
 O2
-O3
 For family FAM61
 Cluster1:
 M61
 F61
 O1
 O2
-O3
 For family FAM62
 Cluster1:
 M62
 F62
 O1
 O2
-O3
 For family FAM63
 Cluster1:
 M63
 F63
 O1
 O2
-O3
 For family FAM64
 Cluster1:
 M64
 F64
 O1
 O2
-O3
 For family FAM65
 Cluster1:
 M65
 F65
 O1
 O2
-O3
 For family FAM66
 Cluster1:
 M66
 F66
 O1
 O2
-O3
 For family FAM67
 Cluster1:
 M67
 F67
 O1
 O2
-O3
 For family FAM68
 Cluster1:
 M68
 F68
 O1
 O2
-O3
 For family FAM69
 Cluster1:
 M69
 F69
 O1
 O2
-O3
 For family FAM70
 Cluster1:
 M70
 F70
 O1
 O2
-O3
 For family FAM71
 Cluster1:
 M71
 F71
 O1
 O2
-O3
 For family FAM72
 Cluster1:
 M72
 F72
 O1
 O2
-O3
 For family FAM73
 Cluster1:
 M73
 F73
 O1
 O2
-O3
 For family FAM74
 Cluster1:
 M74
 F74
 O1
 O2
-O3
 For family FAM75
 Cluster1:
 M75
 F75
 O1
 O2
-O3
 For family FAM76
 Cluster1:
 M76
 F76
 O1
 O2
-O3
 For family FAM77
 Cluster1:
 M77
 F77
 O1
 O2
-O3
 For family FAM78
 Cluster1:
 M78
 F78
 O1
 O2
-O3
 For family FAM79
 Cluster1:
 M79
 F79
 O1
 O2
-O3
-O4
 For family FAM80
 Cluster1:
 M80
 F80
 O1
 O2
-O3
-O4
 For family FAM81
 Cluster1:
 M81
 F81
 O1
 O2
-O3
-O4
 For family FAM82
 Cluster1:
 M82
 F82
 O1
 O2
-O3
-O4
 For family FAM83
 Cluster1:
 M83
 F83
 O1
 O2
-O3
-O4
 For family FAM84
 Cluster1:
 M84
 F84
 O1
 O2
-O3
-O4
 For family FAM85
 Cluster1:
 M85
 F85
 O1
 O2
-O3
-O4
 For family FAM86
 Cluster1:
 M86
 F86
 O1
 O2
-O3
-O4
 For family FAM87
 Cluster1:
 M87
 F87
 O1
 O2
-O3
-O4
 For family FAM88
 Cluster1:
 M88
 F88
 O1
 O2
-O3
-O4
 For family FAM89
 Cluster1:
 M89
 F89
 O1
 O2
-O3
-O4
 For family FAM90
 Cluster1:
 M90
 F90
 O1
 O2
-O3
-O4
 For family FAM91
 Cluster1:
 M91
 F91
 O1
 O2
-O3
-O4
 For family FAM92
 Cluster1:
 M92
 F92
 O1
 O2
-O3
-O4
 For family FAM93
 Cluster1:
 M93
@@ -614,7 +557,6 @@ F93
 O1
 O2
 O3
-O4
 For family FAM94
 Cluster1:
 M94
@@ -622,7 +564,6 @@ F94
 O1
 O2
 O3
-O4
 For family FAM95
 Cluster1:
 M95
@@ -630,8 +571,6 @@ F95
 O1
 O2
 O3
-O4
-O5
 For family FAM96
 Cluster1:
 M96
@@ -639,8 +578,6 @@ F96
 O1
 O2
 O3
-O4
-O5
 For family FAM97
 Cluster1:
 M97
@@ -648,9 +585,6 @@ F97
 O1
 O2
 O3
-O4
-O5
-O6
 For family FAM98
 Cluster1:
 M98
@@ -658,9 +592,6 @@ F98
 O1
 O2
 O3
-O4
-O5
-O6
 For family FAM99
 Cluster1:
 M99
@@ -668,13 +599,777 @@ F99
 O1
 O2
 O3
-O4
-O5
-O6
 For family FAM100
 Cluster1:
 M100
 F100
+O1
+O2
+O3
+For family FAM101
+Cluster1:
+M101
+F101
+O1
+O2
+O3
+For family FAM102
+Cluster1:
+M102
+F102
+O1
+O2
+O3
+For family FAM103
+Cluster1:
+M103
+F103
+O1
+O2
+O3
+For family FAM104
+Cluster1:
+M104
+F104
+O1
+O2
+O3
+For family FAM105
+Cluster1:
+M105
+F105
+O1
+O2
+O3
+For family FAM106
+Cluster1:
+M106
+F106
+O1
+O2
+O3
+For family FAM107
+Cluster1:
+M107
+F107
+O1
+O2
+O3
+For family FAM108
+Cluster1:
+M108
+F108
+O1
+O2
+O3
+For family FAM109
+Cluster1:
+M109
+F109
+O1
+O2
+O3
+For family FAM110
+Cluster1:
+M110
+F110
+O1
+O2
+O3
+For family FAM111
+Cluster1:
+M111
+F111
+O1
+O2
+O3
+For family FAM112
+Cluster1:
+M112
+F112
+O1
+O2
+O3
+For family FAM113
+Cluster1:
+M113
+F113
+O1
+O2
+O3
+For family FAM114
+Cluster1:
+M114
+F114
+O1
+O2
+O3
+For family FAM115
+Cluster1:
+M115
+F115
+O1
+O2
+O3
+For family FAM116
+Cluster1:
+M116
+F116
+O1
+O2
+O3
+For family FAM117
+Cluster1:
+M117
+F117
+O1
+O2
+O3
+For family FAM118
+Cluster1:
+M118
+F118
+O1
+O2
+O3
+For family FAM119
+Cluster1:
+M119
+F119
+O1
+O2
+O3
+For family FAM120
+Cluster1:
+M120
+F120
+O1
+O2
+O3
+For family FAM121
+Cluster1:
+M121
+F121
+O1
+O2
+O3
+For family FAM122
+Cluster1:
+M122
+F122
+O1
+O2
+O3
+For family FAM123
+Cluster1:
+M123
+F123
+O1
+O2
+O3
+For family FAM124
+Cluster1:
+M124
+F124
+O1
+O2
+O3
+For family FAM125
+Cluster1:
+M125
+F125
+O1
+O2
+O3
+For family FAM126
+Cluster1:
+M126
+F126
+O1
+O2
+O3
+For family FAM127
+Cluster1:
+M127
+F127
+O1
+O2
+O3
+For family FAM128
+Cluster1:
+M128
+F128
+O1
+O2
+O3
+For family FAM129
+Cluster1:
+M129
+F129
+O1
+O2
+O3
+For family FAM130
+Cluster1:
+M130
+F130
+O1
+O2
+O3
+For family FAM131
+Cluster1:
+M131
+F131
+O1
+O2
+O3
+For family FAM132
+Cluster1:
+M132
+F132
+O1
+O2
+O3
+For family FAM133
+Cluster1:
+M133
+F133
+O1
+O2
+O3
+For family FAM134
+Cluster1:
+M134
+F134
+O1
+O2
+O3
+For family FAM135
+Cluster1:
+M135
+F135
+O1
+O2
+O3
+For family FAM136
+Cluster1:
+M136
+F136
+O1
+O2
+O3
+For family FAM137
+Cluster1:
+M137
+F137
+O1
+O2
+O3
+For family FAM138
+Cluster1:
+M138
+F138
+O1
+O2
+O3
+For family FAM139
+Cluster1:
+M139
+F139
+O1
+O2
+O3
+For family FAM140
+Cluster1:
+M140
+F140
+O1
+O2
+O3
+For family FAM141
+Cluster1:
+M141
+F141
+O1
+O2
+O3
+For family FAM142
+Cluster1:
+M142
+F142
+O1
+O2
+O3
+For family FAM143
+Cluster1:
+M143
+F143
+O1
+O2
+O3
+For family FAM144
+Cluster1:
+M144
+F144
+O1
+O2
+O3
+For family FAM145
+Cluster1:
+M145
+F145
+O1
+O2
+O3
+For family FAM146
+Cluster1:
+M146
+F146
+O1
+O2
+O3
+For family FAM147
+Cluster1:
+M147
+F147
+O1
+O2
+O3
+For family FAM148
+Cluster1:
+M148
+F148
+O1
+O2
+O3
+For family FAM149
+Cluster1:
+M149
+F149
+O1
+O2
+O3
+For family FAM150
+Cluster1:
+M150
+F150
+O1
+O2
+O3
+For family FAM151
+Cluster1:
+M151
+F151
+O1
+O2
+O3
+For family FAM152
+Cluster1:
+M152
+F152
+O1
+O2
+O3
+O4
+For family FAM153
+Cluster1:
+M153
+F153
+O1
+O2
+O3
+O4
+For family FAM154
+Cluster1:
+M154
+F154
+O1
+O2
+O3
+O4
+For family FAM155
+Cluster1:
+M155
+F155
+O1
+O2
+O3
+O4
+For family FAM156
+Cluster1:
+M156
+F156
+O1
+O2
+O3
+O4
+For family FAM157
+Cluster1:
+M157
+F157
+O1
+O2
+O3
+O4
+For family FAM158
+Cluster1:
+M158
+F158
+O1
+O2
+O3
+O4
+For family FAM159
+Cluster1:
+M159
+F159
+O1
+O2
+O3
+O4
+For family FAM160
+Cluster1:
+M160
+F160
+O1
+O2
+O3
+O4
+For family FAM161
+Cluster1:
+M161
+F161
+O1
+O2
+O3
+O4
+For family FAM162
+Cluster1:
+M162
+F162
+O1
+O2
+O3
+O4
+For family FAM163
+Cluster1:
+M163
+F163
+O1
+O2
+O3
+O4
+For family FAM164
+Cluster1:
+M164
+F164
+O1
+O2
+O3
+O4
+For family FAM165
+Cluster1:
+M165
+F165
+O1
+O2
+O3
+O4
+For family FAM166
+Cluster1:
+M166
+F166
+O1
+O2
+O3
+O4
+For family FAM167
+Cluster1:
+M167
+F167
+O1
+O2
+O3
+O4
+For family FAM168
+Cluster1:
+M168
+F168
+O1
+O2
+O3
+O4
+For family FAM169
+Cluster1:
+M169
+F169
+O1
+O2
+O3
+O4
+For family FAM170
+Cluster1:
+M170
+F170
+O1
+O2
+O3
+O4
+For family FAM171
+Cluster1:
+M171
+F171
+O1
+O2
+O3
+O4
+For family FAM172
+Cluster1:
+M172
+F172
+O1
+O2
+O3
+O4
+For family FAM173
+Cluster1:
+M173
+F173
+O1
+O2
+O3
+O4
+For family FAM174
+Cluster1:
+M174
+F174
+O1
+O2
+O3
+O4
+For family FAM175
+Cluster1:
+M175
+F175
+O1
+O2
+O3
+O4
+For family FAM176
+Cluster1:
+M176
+F176
+O1
+O2
+O3
+O4
+For family FAM177
+Cluster1:
+M177
+F177
+O1
+O2
+O3
+O4
+For family FAM178
+Cluster1:
+M178
+F178
+O1
+O2
+O3
+O4
+For family FAM179
+Cluster1:
+M179
+F179
+O1
+O2
+O3
+O4
+For family FAM180
+Cluster1:
+M180
+F180
+O1
+O2
+O3
+O4
+For family FAM181
+Cluster1:
+M181
+F181
+O1
+O2
+O3
+O4
+For family FAM182
+Cluster1:
+M182
+F182
+O1
+O2
+O3
+O4
+For family FAM183
+Cluster1:
+M183
+F183
+O1
+O2
+O3
+O4
+For family FAM184
+Cluster1:
+M184
+F184
+O1
+O2
+O3
+O4
+For family FAM185
+Cluster1:
+M185
+F185
+O1
+O2
+O3
+O4
+O5
+For family FAM186
+Cluster1:
+M186
+F186
+O1
+O2
+O3
+O4
+O5
+For family FAM187
+Cluster1:
+M187
+F187
+O1
+O2
+O3
+O4
+O5
+For family FAM188
+Cluster1:
+M188
+F188
+O1
+O2
+O3
+O4
+O5
+For family FAM189
+Cluster1:
+M189
+F189
+O1
+O2
+O3
+O4
+O5
+For family FAM190
+Cluster1:
+M190
+F190
+O1
+O2
+O3
+O4
+O5
+For family FAM191
+Cluster1:
+M191
+F191
+O1
+O2
+O3
+O4
+O5
+For family FAM192
+Cluster1:
+M192
+F192
+O1
+O2
+O3
+O4
+O5
+For family FAM193
+Cluster1:
+M193
+F193
+O1
+O2
+O3
+O4
+O5
+For family FAM194
+Cluster1:
+M194
+F194
+O1
+O2
+O3
+O4
+O5
+For family FAM195
+Cluster1:
+M195
+F195
+O1
+O2
+O3
+O4
+O5
+For family FAM196
+Cluster1:
+M196
+F196
+O1
+O2
+O3
+O4
+O5
+O6
+For family FAM197
+Cluster1:
+M197
+F197
+O1
+O2
+O3
+O4
+O5
+O6
+For family FAM198
+Cluster1:
+M198
+F198
+O1
+O2
+O3
+O4
+O5
+O6
+For family FAM199
+Cluster1:
+M199
+F199
+O1
+O2
+O3
+O4
+O5
+O6
+For family FAM200
+Cluster1:
+M200
+F200
 O1
 O2
 O3
