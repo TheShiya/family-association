@@ -5,18 +5,35 @@ library(magrittr)
 library(stringr)
 library(data.table)
 
+#Cretaing segmented children
+
+#Options function allows user to set and examine global options which affects the way R computes and displays results 
+#Scripen is a penalty to be applied when deciding to print numeric values in fixed or exponential notation
+#Positive values bias towards fixed and negative towards scientific notation: fixed notation will be preferred unless it is more than ‘scipen’ digits wider.
 options(scipen=999)
 
+# strrep function: Repeat the character strings in a character vector a given number of times
 seq3 <- strrep("40 ", 200)
+#print(paste0(seq3))
+#trim whitespace from the end of the string
 seq4 <- str_trim(seq3)
+#print(paste0(seq4))
 
-
+returns an absolute date-time value
 start <- Sys.time()
-#Gerenates a static row id seed
-#set.seed(414)
-row_id = read.table("row_id.vec")$V1
 
-path_ms = "/Users/jconradc1/Desktop/Simulation/msdir/"
+#Gerenates a static row id seed to start at 414 each time
+set.seed(414)
+row_id = read.table("new_id_row.txt")$V1
+# [1/3] Note: "new_id_row.txt" is essentially Joe's original .vec file but now is inverted, meaning the pairs are still randomly generated 
+# [2/3] but now the pairs are flipped. In theory, this should not affect results since child creation pairs are still random and remain static. 
+# [3/3] The script I used to do this can be found here 
+
+# [1/2] Before proceeding, you will need to download U-Chicago's ms program for enerating samples underneutral models. Documentation and download can 
+# [2/2] be found here: https://uchicago.app.box.com/s/l3e5uf13tikfjm7e1il1eujitlsjdx13
+path_ms = "/Users/samanthafigeuredo/Downloads/self-replication/"
+paste0("gcc -o ", path_ms,"ms ",path_ms,"ms.c ", path_ms,"streec.c ",
+       path_ms,"rand1t.c -lm")
 
 
 paste0("gcc -o ", path_ms,"ms ",path_ms,"ms.c ", path_ms,"streec.c ",
