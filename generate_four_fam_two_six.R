@@ -19,7 +19,7 @@ seq3 <- strrep("40 ", 200)
 seq4 <- str_trim(seq3)
 #print(paste0(seq4))
 
-returns an absolute date-time value
+#returns an absolute date-time value to see how long scripts take
 start <- Sys.time()
 
 #Gerenates a static row id seed to start at 414 each time
@@ -31,7 +31,7 @@ row_id = read.table("new_id_row.txt")$V1
 
 # [1/2] Before proceeding, you will need to download U-Chicago's ms program for enerating samples underneutral models. Documentation and download can 
 # [2/2] be found here: https://uchicago.app.box.com/s/l3e5uf13tikfjm7e1il1eujitlsjdx13
-path_ms = "/Users/samanthafigeuredo/Downloads/self-replication/"
+path_ms = "/Users/samanthafigeuredo/Downloads/self-replication/msdir"
 paste0("gcc -o ", path_ms,"ms ",path_ms,"ms.c ", path_ms,"streec.c ",
        path_ms,"rand1t.c -lm")
 
@@ -40,7 +40,7 @@ paste0("gcc -o ", path_ms,"ms ",path_ms,"ms.c ", path_ms,"streec.c ",
        path_ms,"rand1t.c -lm")
 
 
-#Function from within software for msdir
+#Function from within software for msdir- make sure you are in the correct folder and 
 source(paste0(path_ms,"readms.output.R"))
 #
 # Expect command line args at the end. 
