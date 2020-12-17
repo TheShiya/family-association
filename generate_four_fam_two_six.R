@@ -40,23 +40,24 @@ paste0("gcc -o ", path_ms,"ms ",path_ms,"ms.c ", path_ms,"streec.c ",
        path_ms,"rand1t.c -lm")
 
 
-#Function from within software for msdir- make sure you are in the correct folder and 
+#Function from within software for msdir- make sure you are in the correct folder and that the path is absolute
 source(paste0(path_ms,"readms.output.R"))
 #
-# Expect command line args at the end. 
+# Expect command line args at the end. Only arguments after --args are returned if trailing is TRUE
+# Only called when we are call ms- expecting system compands indside of R
 args = commandArgs(trailingOnly = TRUE)
+
 # Extract and cast as numeric from character
-
-
 bash_batch_ind <- 1
 
-
+# Sequece to 9875 by 125 value increments when dealing with clusters
+#batch_begin 
 batch_begin <- seq(from = 0, to = 9875, by = 125)
 
+# As batch increments up, get the first and last values of batch_begin vector (double)
 start_sim <- batch_begin[bash_batch_ind] + 1
-
 end_sim <- batch_begin[bash_batch_ind] + 125
-
+#0+125
 print(paste0("This is batch ", bash_batch_ind))
 
 
@@ -69,12 +70,17 @@ seeds <- list()
 start_time <- Sys.time()
 
 for (k in start_sim:end_sim) {
-  #Randomness within this function some seed
+  # Creation of IDs for each row for 0 and 1's to be selected as haplotypes (gammetes in ms)- two rows per indovidual's haplotypes
+  # Randomness within this function some seed
+  #convert the sample from 1 to 0, the creation of pairs (randomized) to a list. Replicate function will do this 20 times, and then be
+  #converted into a single vector that is unlisted from a list of vectors to single vectors
   row_id_gc1<-unlist(c(replicate(20,as.list(sample(1:0, 2)))))
   row_id_gc2<-unlist(c(replicate(20,as.list(sample(1:0, 2)))))
   
-  #Added so siblings are not related
-  
+  # Create a family of 8 every single time (2 parents and 6 children)- a single child willl select one of the two rows from each parent (2 rows total)
+  # Because we do not want siblings to be identical, we must randomly sample for each child for each K 
+  #Added so siblings are not identical 
+  #haps number based on number of siblings 
   #######################
   haps1 <- sample(0:1, 1)
   haps2 <- sample(0:1, 1)
@@ -83,10 +89,16 @@ for (k in start_sim:end_sim) {
   haps5 <- sample(0:1, 1)
   haps6 <- sample(0:1, 1)
   ########################
-
+	
   try(system(paste0("gcc -o ", path_ms,"ms ",path_ms,"ms.c ", path_ms,"streec.c ",
                   path_ms,"rand1t.c -lm"), intern=FALSE, wait=TRUE))
   
+  # From ms documentation - creating founding population of parents
+  # system command to ms program with the following formatted parameters for island population study without island effect  
+  # 8000 founders in 1 replication with a mutation rate of 5 
+  # 10,000 is the number of sites that this recombination occurs at the 0.1 rate ensuring a lot of recombinations in founders 
+  # to decrease cryptic relatedness 
+  # 4,000 is the migration paameter which is meant to decrease island effect
   temp_out<-try(system(paste0(path_ms,"ms 8000 1 -t 5.0 -r 0.1 10000 -I 200 ", 
 		 seq4," 4000 -s 100"), intern=TRUE))
 
@@ -100,7 +112,8 @@ for (k in start_sim:end_sim) {
   #Convert to table and filter based upon row_id
   pop <- msout_d$gametes[[1]] %>% as.data.frame() %>% slice(1:8000) %>% 
     as_tibble()
-  
+  #times = number of times to repeat each element if of length length(x)
+  # each = rep. 40 times
   pop$subpop = rep(1:200, times = 1, each = 40)
     
   pop$id = rep(1:4000, times = 1, each = 2)
