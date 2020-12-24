@@ -12,6 +12,8 @@ library(data.table)
 #Positive values bias towards fixed and negative towards scientific notation: fixed notation will be preferred unless it is more than ‘scipen’ digits wider.
 options(scipen=999)
 
+# creating 200 islands or clusters of 40 for each founder
+# 20 haplotypes
 # strrep function: Repeat the character strings in a character vector a given number of times
 seq3 <- strrep("40 ", 200)
 #print(paste0(seq3))
@@ -23,7 +25,7 @@ seq4 <- str_trim(seq3)
 start <- Sys.time()
 
 #Gerenates a static row id seed to start at 414 each time
-set.seed(414)
+set.seed(919)
 row_id = read.table("new_id_row.txt")$V1
 # [1/3] Note: "new_id_row.txt" is essentially Joe's original .vec file but now is inverted, meaning the pairs are still randomly generated 
 # [2/3] but now the pairs are flipped. In theory, this should not affect results since child creation pairs are still random and remain static. 
@@ -98,7 +100,8 @@ for (k in start_sim:end_sim) {
   # 8000 founders in 1 replication with a mutation rate of 5 
   # 10,000 is the number of sites that this recombination occurs at the 0.1 rate ensuring a lot of recombinations in founders 
   # to decrease cryptic relatedness 
-  # 4,000 is the migration paameter which is meant to decrease island effect
+  # 4,000 is the migration paameter which is meant to decrease island effect - see SMMAT paper for reference 
+  # This is the ms output list within a list 
   temp_out<-try(system(paste0(path_ms,"ms 8000 1 -t 5.0 -r 0.1 10000 -I 200 ", 
 		 seq4," 4000 -s 100"), intern=TRUE))
 
@@ -112,16 +115,21 @@ for (k in start_sim:end_sim) {
   #Convert to table and filter based upon row_id
   pop <- msout_d$gametes[[1]] %>% as.data.frame() %>% slice(1:8000) %>% 
     as_tibble()
-  #times = number of times to repeat each element if of length length(x)
+  #times = number of times to repeat each element of length length(x)
   # each = rep. 40 times
+  # identifying potential subpopulation- 20 founders that each have 2 rows
   pop$subpop = rep(1:200, times = 1, each = 40)
-    
+  
+  # for each individual, keep track of which subpopulation they are in 
   pop$id = rep(1:4000, times = 1, each = 2)
-    
+  
+  # and also what individual number they are, which is why we replicate 20 founders 2 times for 200 islands
   pop$subpop_id = rep(1:20, times = 200, each = 2)
-    
+  
+  # set random 0 or 1 to get consistent chunck of DNA assigned to each individual 
   pop$row_id = row_id
-    
+  
+  # slpitting pop data frame into by sub_pop (200 different sub populations)
   pop <- pop %>% select(id, subpop, subpop_id, row_id, 1:100)
   
   popl <- split.data.frame(pop, pop$subpop)
