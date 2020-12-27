@@ -132,12 +132,14 @@ for (k in start_sim:end_sim) {
   # slpitting pop data frame into by sub_pop (200 different sub populations)
   pop <- pop %>% select(id, subpop, subpop_id, row_id, 1:100)
   
+  # creation of population list: split pop dataframe group by sub population to best format differnet island groups
+  # list of individual islands 
   popl <- split.data.frame(pop, pop$subpop)
 
 
 
   ##############################################################################
-  
+  # creation of kids
   sub1 <- 0
   sub2 <- 0
   sub3 <- 0
@@ -156,11 +158,19 @@ for (k in start_sim:end_sim) {
   # sample some number 2-6 and assign that to founders
   # Associate an FID with the children
   
+  # CREATING CHILDREN 
   for (i in 1:length(popl)) {
-  
+   
+    # idea: random parent finding random mate and produce 6 kids with mate
+    # Because of high migration parameter, proximity no longer is an issue thus making it feasible to sequentially mate 
+    # ex: p1 and p2 will mate, p3 and p4 will mate
+	  
+    # first kids 
     first_gen <- NULL
-    second_gen <- NULL
-    
+	  
+    # taking the row_id and filtering by random asignmnet of 0 or 1 from the parent. 
+    # for every founder, replicate 2 times per island
+	  
     sub1 <- popl[[i]] %>% filter(row_id == haps1)
     
     sub1$subpop_id <- rep(21:30, times = 1, each = 2)
@@ -188,32 +198,13 @@ for (k in start_sim:end_sim) {
 
     first_gen <- bind_rows(sub1, sub2, sub3, sub4, sub5, sub6)
     
-    # sub3 <- first_gen %>% filter(subpop_id >= 21) %>% mutate(row_id = row_id_gc1) %>% 
-    #   filter(row_id==haps3)
-    # 
-    # sub3$subpop_id <- rep(41:50, times = 1, each = 2)
-    # 
-    # sub4 <- first_gen %>% filter(subpop_id >= 21) %>% mutate(row_id = row_id_gc2) %>% 
-    #   filter(row_id==haps4)
-    # 
-    # sub4$subpop_id <- rep(51:60, times = 1, each = 2)
-    # 
-    # second_gen <- bind_rows(sub3, sub4)
     
     popl[[i]] <- bind_rows(list(popl[[i]], first_gen))
     
   }
   
-  
-  
  
-  
-  
-  
-  
-  
-  
-  
+  # FORMATTTING 
   ##############################################################################
   #Need to create columns and row names and make sure it works
   
@@ -221,7 +212,11 @@ for (k in start_sim:end_sim) {
   geno_l <- list()
   t1 <- 0
   j <- 0
-  
+  # genotype data trying to format to best be haplotype 
+  # A single row per individual, and in each row is either a 0,1, or 2 based on their haplotype
+  #	00- 0
+  #	01- 1
+  #	11- 2
   for (j in 1:length(popl)) {
     t1 <- popl[[j]] %>% select(subpop, subpop_id, V1:V100) %>%
       
@@ -237,7 +232,7 @@ for (k in start_sim:end_sim) {
   }
   
   ##############################################################################
-  
+  # turning into tibble 
   genotype_pop <- bind_rows(geno_l)
   
   genotype_pop$id = paste0("id_",genotype_pop$subpop_id, "_", genotype_pop$subpop) 
@@ -260,6 +255,7 @@ for (k in start_sim:end_sim) {
   df1 <- df %>% mutate(r1=rep(1,100), r3=rep(0,100), num=(k - 1) * 100 + 1:100) %>% 
     select(r1,rsid,r3,num,id_1_1:id_80_200)
   
+  # formatting back to appropriatly be read by bed file - 
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("0", "A A", x))
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("1", "A C", x))
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("2", "C C", x))
