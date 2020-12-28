@@ -117,26 +117,26 @@ for (k in start_sim:end_sim) {
     as_tibble()
   #times = number of times to repeat each element of length length(x)
   # each = rep. 40 times
-  # identifying potential subpopulation- 20 founders that each have 2 rows
+  # identifying potential subpopulation- 20 founders that each have 2 rows for a total per island of 8000 entries
   pop$subpop = rep(1:200, times = 1, each = 40)
   
-  # for each individual, keep track of which subpopulation they are in 
+  # for each individual, keep track of which subpopulation they are in  --- each specific individual
   pop$id = rep(1:4000, times = 1, each = 2)
   
-  # and also what individual number they are, which is why we replicate 20 founders 2 times for 200 islands
-  pop$subpop_id = rep(1:20, times = 200, each = 2)
+  # and also what individual number they are in - within their subpop
+  pop$subpop_id = rep(1:20, times = 200, each = 20
   
   # set random 0 or 1 to get consistent chunck of DNA assigned to each individual 
   pop$row_id = row_id
   
-  # slpitting pop data frame into by sub_pop (200 different sub populations)
+  # slpitting pop data frame into by sub_pop (200 different sub populations), testing 100 SNPs
   pop <- pop %>% select(id, subpop, subpop_id, row_id, 1:100)
   
   # creation of population list: split pop dataframe group by sub population to best format differnet island groups
-  # list of individual islands 
+  # list of individual islands
   popl <- split.data.frame(pop, pop$subpop)
 
-
+# 200 islands, 20 founders, each have 6 kids - each founder has 2 haplotypes
 
   ##############################################################################
   # creation of kids
@@ -198,7 +198,7 @@ for (k in start_sim:end_sim) {
 
     first_gen <- bind_rows(sub1, sub2, sub3, sub4, sub5, sub6)
     
-    
+    # by now, every there are familes of size 8 where every 2 founders have 6 children
     popl[[i]] <- bind_rows(list(popl[[i]], first_gen))
     
   }
@@ -217,6 +217,7 @@ for (k in start_sim:end_sim) {
   #	00- 0
   #	01- 1
   #	11- 2
+  # selecting based on subpopulation and subpop_id to have one value based on haplotype for each individual
   for (j in 1:length(popl)) {
     t1 <- popl[[j]] %>% select(subpop, subpop_id, V1:V100) %>%
       
@@ -235,12 +236,14 @@ for (k in start_sim:end_sim) {
   # turning into tibble 
   genotype_pop <- bind_rows(geno_l)
   
+  # for each individual, create an absolute id of their individual id followed by what sub population they belong to (out of 200)
   genotype_pop$id = paste0("id_",genotype_pop$subpop_id, "_", genotype_pop$subpop) 
-
+  
   genotype_pop <- genotype_pop %>% select(id, V1:V100)
 
 	options(scipen=999)
   
+  # classify reference snp for each out file -- each rs
   geno.colnames <- paste0("rs", as.character((k - 1) * 100 + 1:100))
     
   df<-genotype_pop %>% as.data.frame(stringsAsFactors=F) %>% t() %>% as_tibble()
@@ -256,6 +259,7 @@ for (k in start_sim:end_sim) {
     select(r1,rsid,r3,num,id_1_1:id_80_200)
   
   # formatting back to appropriatly be read by bed file - 
+  # bed file can only be turned into the appropritae genotype thus we give it appropriate letter conversion
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("0", "A A", x))
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("1", "A C", x))
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("2", "C C", x))
