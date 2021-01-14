@@ -1,3 +1,9 @@
+######## PARAMETERS #############
+# Odds ration/ effect size : 1.5 for 60 sleected SNPs
+# base prevelance for random trait : 0.1
+# family effect: 
+# individual effect:
+##################################
 library(data.table)
 library(magrittr)
 library(dplyr)
