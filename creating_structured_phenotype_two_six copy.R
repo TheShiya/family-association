@@ -1,8 +1,8 @@
 ######## PARAMETERS #############
 # Odds ration/ effect size : 1.5 for 60 sleected SNPs
 # base prevelance for random trait : 0.1
-# family effect: 
-# individual effect:
+
+# File dependencies: trans.tfam, trans.tped
 ##################################
 library(data.table)
 library(magrittr)
@@ -279,7 +279,7 @@ for (j in 1:1){
   alpha <- log(prev/(1-prev))
   
   # total effect for family and casual effect
-  beta_tot <- (beta_fam + rowSums(snps_eff_mat)) # Snps plus family effect
+  beta_tot <- (beta_fam*0 + rowSums(snps_eff_mat)) # Snps plus family effect
   
   # propability function and converting to exponential to later sample from it 
   trait_l_bin[[j]] <- exp(alpha + beta_tot) / (1 + exp(alpha + beta_tot))
