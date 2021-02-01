@@ -60,9 +60,8 @@ batch_begin <- seq(from = 0, to = 9875, by = 125)
 start_sim <- batch_begin[bash_batch_ind] + 1
 end_sim <- batch_begin[bash_batch_ind] + 125
 #0+125
+
 print(paste0("This is batch ", bash_batch_ind))
-
-
 
 k<-0
 
@@ -83,6 +82,7 @@ for (k in start_sim:end_sim) {
   # Because we do not want siblings to be identical, we must randomly sample for each child for each K 
   #Added so siblings are not identical 
   #haps number based on number of siblings 
+
   #######################
   haps1 <- sample(0:1, 1)
   haps2 <- sample(0:1, 1)
@@ -102,6 +102,7 @@ for (k in start_sim:end_sim) {
   # to decrease cryptic relatedness 
   # 4,000 is the migration paameter which is meant to decrease island effect - see SMMAT paper for reference 
   # This is the ms output list within a list 
+
   temp_out<-try(system(paste0(path_ms,"ms 8000 1 -t 5.0 -r 0.1 10000 -I 200 ", 
 		 seq4," 4000 -s 100"), intern=TRUE))
 
@@ -170,7 +171,7 @@ for (k in start_sim:end_sim) {
 	  
     # taking the row_id and filtering by random asignmnet of 0 or 1 from the parent. 
     # for every founder, replicate 2 times per island
-	  
+
     sub1 <- popl[[i]] %>% filter(row_id == haps1)
     
     sub1$subpop_id <- rep(21:30, times = 1, each = 2)
@@ -199,12 +200,11 @@ for (k in start_sim:end_sim) {
     first_gen <- bind_rows(sub1, sub2, sub3, sub4, sub5, sub6)
     
     # by now, every there are familes of size 8 where every 2 founders have 6 children
+
     popl[[i]] <- bind_rows(list(popl[[i]], first_gen))
     
   }
   
- 
-  # FORMATTTING 
   ##############################################################################
   #Need to create columns and row names and make sure it works
   
@@ -212,12 +212,14 @@ for (k in start_sim:end_sim) {
   geno_l <- list()
   t1 <- 0
   j <- 0
+                      
   # genotype data trying to format to best be haplotype 
   # A single row per individual, and in each row is either a 0,1, or 2 based on their haplotype
   #	00- 0
   #	01- 1
   #	11- 2
   # selecting based on subpopulation and subpop_id to have one value based on haplotype for each individual
+
   for (j in 1:length(popl)) {
     t1 <- popl[[j]] %>% select(subpop, subpop_id, V1:V100) %>%
       
@@ -239,6 +241,7 @@ for (k in start_sim:end_sim) {
   # for each individual, create an absolute id of their individual id followed by what sub population they belong to (out of 200)
   genotype_pop$id = paste0("id_",genotype_pop$subpop_id, "_", genotype_pop$subpop) 
   
+
   genotype_pop <- genotype_pop %>% select(id, V1:V100)
 
 	options(scipen=999)
@@ -260,6 +263,7 @@ for (k in start_sim:end_sim) {
   
   # formatting back to appropriatly be read by bed file - 
   # bed file can only be turned into the appropritae genotype thus we give it appropriate letter conversion
+
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("0", "A A", x))
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("1", "A C", x))
   df1[5:length(df1)]<-sapply(df1[5:length(df1)], function(x) gsub("2", "C C", x))
