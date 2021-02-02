@@ -1,3 +1,9 @@
+######## PARAMETERS #############
+# Odds ration/ effect size : 1.5 for 60 sleected SNPs
+# base prevelance for random trait : 0.1
+
+# File dependencies: trans.tfam, trans.tped
+##################################
 library(data.table)
 library(magrittr)
 library(dplyr)
@@ -29,15 +35,16 @@ if(snps_n < 1 | is.na(snps_n)) {
 set.seed(414)
 #eff <- runif(snps_n, min = -.2, max = .2)
 ## Null first
+# Pick 100 snps from genome and test the effect of these snps in GWAS, despite noise of family pods of relnatedness of error, see effect that is picked up. 
+# there values of 100 are the causal effect that are going to be given to snps selected at random. We want to see consisnent positive an negative effect on trait
+#  
 eff <- c(rep(log(1.5), 60), rep(log(.5), 40))
 
 # log(1.5), log(0.5)
 
-
-
 print("Effects created")
 print(eff)
-write.table(eff, file = "output/eff.txt", sep = "\t", col.names = F, 
+write.table(eff, file = "output/effect.txt", sep = "\t", col.names = F, 
             row.names = F,
             quote = F)
 
@@ -47,32 +54,42 @@ print(bed_call)
 try(system(bed_call, intern = F))
 
 # Call to get mafs for each allele
+# we may not want to sample just ant random snp, as some snps may just occur in one person and not affet the rest of the chosen population. THerefore we assess
+# the minor allele frequencey which provides the second second most comon allele in the given population- we will use this to smple snps
 maf_call <- paste0("plink -bfile ", "output/", f_name," --freq --out ", "output/",f_name)
 print(maf_call)
 try(system(maf_call, intern = F))
 
-# reads maf, selects 100 snps above .4 frequency randomly and writes it out
+# reads maf, selects 100 snps above .4 frequency randomly and writes it out- arange by allele frequency 
 maf <- fread(paste0("output/",f_name, ".frq")) %>% arrange(desc(MAF)) %>% as_tibble()
 set.seed(414)
 ###### This will need be MAF .05
+# These are selected snps, with MAFs >= .09 & MAFs <= .102 
 snps_af <- maf %>% filter(MAF >= .090 & MAF <= .102) %>% sample_n(snps_n) %>% 
   select(SNP, MAF) %>% arrange(SNP)
 snps <- snps_af$SNP
 print("Snps chosen from plink file")
 print(snps)
-write.table(snps, file = "output/my_snps.txt", sep = "\t", col.names = F, 
+# write out snp files
+write.table(snps, file = "output/selected_snps.txt", sep = "\t", col.names = F, 
             row.names = F,
             quote = F)
 
 
 # LD scores - find null that are not in LD with effect snps lower than .1
+# creation of ld file which will have linkage disequilibruim score which is how much is each snp is correlected with each oher snp
+# trailing snpa in manhattan plot may be in ld with effect snps. Filter these snps at one point. This is just testing for snp correlation.
 ld_call<-paste0("plink --bfile output/",f_name,
                 " --ld-snp-list output/my_snps.txt --out output/", 
                 f_name, " --r2 --ld-window-kb 1000 --ld-window 99999 --ld-window-r2 0")
 print(ld_call)
 
 ld<-fread(paste0("output/", f_name,".ld")) %>% as_tibble()
-
+ld
+# chromosone snp is on, base pair for snp, and at the end is correlation btw snp
+# correlation coefficent of snp
+# if in perfect correlation, the r^2 would have a value of 1
+# if not as frequent, then now r^2 would be low- we dont end up using much of this but just for record keeping it is there!
 snps_no_ld<-ld %>% filter(SNP_A %in% snps) %>% arrange(SNP_A) %>% filter(R2 <= .1)
 
 write.table(snps_no_ld, file = "output/snps_not_in_ld_with_selected.txt", 
@@ -92,14 +109,22 @@ print("snps and associated effects")
 print(snp_eff_write)
 
 # Subsets based on the snps that were wrote out earlier in plink
+# taking plink files created earlier and extracting selected snps from file - essentially just those snps by the ~16k individual
 sub_call <- paste0("plink -bfile ", "output/", f_name, 
                    " --extract output/my_snps.txt --recodeAD --out ", "output/",f_name)
 sub_call
 try(system(sub_call, intern = F))
 # Reads the plink file and arranges by FID for the genetypes
-
+# saving the extracted snps into .raw file 
 rs <- fread(paste0("output/", f_name, ".raw")) %>% arrange(FID) %>% as_tibble()
+rs
+# cormatting: IID for individual code, PAT, MAT, SEX, addetive genetic effect (_C), and dominamt genetic effect
+# addetive - homozygous recessive - trait does not show up - 0 for less dominant allele
+# heterozygous - one allele that is dominant one that is recessive, then you will have a 1
+# homozygous dominant - 2
 
+# dominant model- _HET- snps with dominant allele 
+#formatting corretly 
 pc<-c("P1", "P2", "C1", "C2", "C3", "C4", "C5","C6")
 pc_order<-rep(pc, length(unique(rs$FID)))
 pc_correct <- c("P1", "C1", "C2", "C3", "C4", "C5", "C6", "P2")
@@ -112,14 +137,15 @@ rs_ordered<-rs %>% mutate(pc_rel = pc_order) %>%
 # Take additive model takes specifically the additive subsetted genotypes and 
 # writes them out
 
-# This is for additive model
+# Selecing only addative model snps 
 rs1 <- rs_ordered %>% select(names(rs)[!str_detect(names(rs), "HET")]) %>% 
   ungroup(FID) %>% 
   select(-(FID:PHENOTYPE))
 
-# This creates dominant model
+# selecting only dominant model- anything with a 1 or a 2 is a 1
 rs2<-sapply(rs1, function(x) ifelse(x==2,1,x)) %>% as_tibble()
 
+# writing out different genetic effects
 write.table(rs1, file = "output/genos_add.txt", sep = "\t", col.names = T, 
             row.names = F,
             quote = F)
@@ -134,24 +160,31 @@ snp_eff <- fread("output/snp_eff.txt")
 # Applies effects as multiple of allele for each individual (to be added into pheno)
 
 #######################################################################
-# This fixes previous bug where snp effects were out pf order when applied to
+# This fixes previous bug where snp effects were out of order when applied to
 # genos
+# get rid of _C to properly align with SNP names compared to SNP effects
 names(rs1) <- substr(names(rs1),1,nchar(names(rs1))-2)
+# set by snp_order
 setcolorder(rs1, as.character(snp_eff$V1))
 ##################################################
 # Double check the names are okay
 stopifnot(snp_eff$V1 == names(rs1))
 
+# snp effect matrix creation- mutiplying the effect the effects to entirety of genotype matrix
+# for snps that have causal effect
 snps_eff_mat <- as.matrix(rs1) %*% diag(snp_eff$V2)
 
 # Keep zeroes 0-->0, 1-->1 2-->1
 #snp_eff_mat_dom <-#
 
+# sumation of effects
+# effects are summed row wise, causual phenotype built out of genotype- addetive model
 r1_snp_eff <- rs %>% select(IID) %>% bind_cols(rowSums(snps_eff_mat) %>% 
                                                  as_tibble())
 print("These are the snp add effects per individual")
 print(r1_snp_eff)
 
+# write out
 write.table(r1_snp_eff , file = "output/iid_snp_eff.txt", sep = "\t", col.names = T, 
             row.names = F,
             quote = F)
@@ -186,56 +219,13 @@ for (q in 1:200){
 
 library(mvtnorm)
 
-
-# four_fam_mat <- matrix(
-#   c(
-#     0.5, 0, 0.25, 0.25,
-#     0, 0.5, 0.25, 0.25,
-#     0.25, 0.25, 0.5, 0.25,
-#     0.25, 0.25, 0.25, 0.5
-#   ),
-#   byrow = TRUE,
-#   ncol = 4
-# )
-# 
-# five_fam_mat <- matrix(
-#   c(
-#     .5, 0.25, 0.25, 0.25, 0,
-#     0.25, 0.5, 0.25, 0.25, 0.25,
-#     0.25, 0.25, 0.5, 0.25, 0.25,
-#     0.25, 0.25, 0.25, 0.5, 0.25,
-#     0, 0.25, 0.25, 0.25, 0.25, 0.5
-#   ),
-#   byrow = TRUE,
-#   ncol = 5
-# )
-# 
-# six_fam_mat <- matrix(
-#   c(
-#     0.5, 0.25, 0.25, 0.25, 0.25, 0,
-#     0.25, 0.5, 0.25, 0.25, 0.25, 0.25,
-#     0.25, 0.25, 0.5, 0.25, 0.25, 0.25,
-#     0.25, 0.25, 0.25, 0.5, 0.25, 0.25,
-#     0.25, 0.25, 0.25, 0.25, 0.5, 0.25,
-#     0, 0.25, 0.25, 0.25, 0.25, 0.5,
-#   ),
-#   byrow = TRUE,
-#   ncol = 6
-# )
-# 
-# seven_fam_mat <- matrix(
-#   c(
-#     0.5, 0.25, 0.25, 0.25, 0.25, 0.25, 0,
-#     0.25, 0.5, 0.25, 0.25, 0.25, 0.25, 0.25,
-#     0.25, 0.25, 0.5, 0.25, 0.25, 0.25, 0.25,
-#     0.25, 0.25, 0.25, 0.5, 0.25, 0.25, 0.25,
-#     0.25, 0.25, 0.25, 0.25, 0.5, 0.25, 0.25,
-#     0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.25,
-#     0, 0.25, 0.25, 0.25, 0.25, .25, 0.5
-#   ),
-#   byrow = TRUE,
-#   ncol = 7
-# )
+# base matrix - has to be mirrored from start to end
+# starting with parent and followed by 6 children and ending with spouse
+# coeficcent of relatedness with yourself is 1/2 = 0.5
+                               # your children is 0.5/2 = 0.25
+                               # your spouce is 0/2 = 0.
+# matrix of relatedness- multivarient normal distibution bc we use coevairent matrix to influence in multiple random normals for individuals
+# coevareience matrix- when adding noise in family effect, we create a shared enviornmental impact between family members- genes + enviornment = phenotype
 
 eight_fam_mat <- matrix(
   c(
@@ -251,16 +241,14 @@ eight_fam_mat <- matrix(
   byrow = TRUE,
   ncol = 8
 )
-beta_fam <- NULL
-beta_eff <- NULL
+beta_fam <- NULL # family effect 
+beta_eff <- NULL # casual effect
 
 i <- 0
 j <- 0
 
 # This is going to be changed by family size
 # Select the appropriate matrix with the family
-
-
 
 trait_l <- list()
 trait_l_bin <- list()
@@ -281,35 +269,41 @@ for (j in 1:1){
   
   print(length(beta_fam))
   
+  # normal error 
   epsilon <- rep(rnorm(n = 8000)) #individual error
   
-  zeta <- rep(rnorm(200, sd=.25), each = 40) #sub population effect
-  
+  # base prevelance for random trait 
   prev <- .1 # Prevalence
   
+  # function of prevelence used to create binary trait 
   alpha <- log(prev/(1-prev))
   
+  # total effect for family and casual effect
+  beta_tot <- (beta_fam*0 + rowSums(snps_eff_mat)) # Snps plus family effect
   
-  beta_tot <- (beta_fam + rowSums(snps_eff_mat)) # Snps plus family effect
-  
-  
+  # propability function and converting to exponential to later sample from it 
   trait_l_bin[[j]] <- exp(alpha + beta_tot) / (1 + exp(alpha + beta_tot))
   
   # these should not be data.frames make sure they are vectors
-  trait_l[[j]] <- beta_tot + epsilon + zeta*0
+  # continuous trait in list format that is as a function of the beta family, total effect of rows and casual effect, and random noise
+  trait_l[[j]] <- beta_tot + epsilon 
   
   beta_fam <- NULL
 }
 
-
-
+# worth doing another random seed for the purpose of random sampling
+seed(917)
 samp_func <- function(X) (sample(0:1, size=1, prob=c(1-X,X)))
 
-
+#normally we would have some random noise with this but for the binary one, because we have sampling prodedure based on probability, we do not need to 
+# manually account for random noise (epsilon). 
+# take binary probabiliy and samples 
 traits_bin<-apply(trait_l_bin %>% bind_cols(), MARGIN=c(1,2), samp_func) %>% 
   as_tibble()
+# binary phenotype
 names(traits_bin) <- "V11"
 
+# continuous
 traits_cont<-bind_cols(trait_l)
 names(traits_cont) <- "V1"
 
@@ -336,24 +330,6 @@ read.table(paste0("output/",f_name,".fam")) %>% rename(
   as_tibble() %>% 
   select(id, family_id, pop_id, V1, V11) %>% 
   rename("FID"="family_id", "IID" = "id") -> pheno2
-#rename("IID"="id","FID"="family_id", "PID"="pop_id") -> pheno
-
-# mutate(ind_error=epsilon) %>%
-# arrange(family_id) %>% mutate(fam_effect=fam_eff_tot) %>%
-# arrange(pop_id) %>% mutate(pop_effect=rep(Z, each=40)) %>%
-# mutate(trait=(pop_effect+fam_effect+ind_error))
-
-
-# Reread in genotype data and look at IDs
-
-
-
-# lm_runs <- list()
-# 
-# for (i in names(rs1)){
-#   lm_runs[i]<-lm(pheno2$V1 ~ rs1[[i]])$coef[[2]]
-# }
-
 
 
 # This can be used in plink
